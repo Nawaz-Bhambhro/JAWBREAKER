@@ -1,0 +1,178 @@
+### 🏥 HOME HEALTH AI API TESTING
+
+### 1. AUTHENTICATION ENDPOINTS
+
+### Register a new user
+POST http://127.0.0.1:8000/auth/register/
+Content-Type: application/json
+
+{
+    "username": "nurse_jane",
+    "email": "jane@healthcare.com",
+    "first_name": "Jane",
+    "last_name": "Smith",
+    "role": "nurse",
+    "license_number": "RN123456",
+    "phone": "555-0123",
+    "password": "SecurePass123!",
+    "password_confirm": "SecurePass123!"
+}
+
+### Login user
+POST http://127.0.0.1:8000/auth/login/
+Content-Type: application/json
+
+{
+    "username": "nurse_jane",
+    "password": "SecurePass123!"
+}
+
+### Get user profile (requires authentication)
+GET http://127.0.0.1:8000/auth/profile/
+Authorization: Bearer YOUR_ACCESS_TOKEN_HERE
+
+### 2. PATIENT MANAGEMENT ENDPOINTS
+
+### Create a new patient
+POST http://127.0.0.1:8000/api/patients/
+Content-Type: application/json
+Authorization: Bearer YOUR_ACCESS_TOKEN_HERE
+
+{
+    "mrn": "MRN001234",
+    "first_name": "John",
+    "last_name": "Doe",
+    "date_of_birth": "1965-05-15",
+    "gender": "M",
+    "phone": "555-0199",
+    "email": "john.doe@email.com",
+    "address": "123 Main St, Anytown, ST 12345",
+    "emergency_contact_name": "Jane Doe",
+    "emergency_contact_phone": "555-0200",
+    "primary_diagnosis": "Diabetes Type 2, Hypertension",
+    "secondary_diagnoses": "Osteoarthritis",
+    "allergies": "Penicillin",
+    "medications": "Metformin 500mg BID, Lisinopril 10mg daily",
+    "insurance_provider": "Medicare",
+    "insurance_id": "1234567890A"
+}
+
+### Get all patients
+GET http://127.0.0.1:8000/api/patients/
+Authorization: Bearer YOUR_ACCESS_TOKEN_HERE
+
+### Get specific patient
+GET http://127.0.0.1:8000/api/patients/1/
+Authorization: Bearer YOUR_ACCESS_TOKEN_HERE
+
+### Search patients
+GET http://127.0.0.1:8000/api/patients/search/?query=John&gender=M&age_min=50&age_max=70
+Authorization: Bearer YOUR_ACCESS_TOKEN_HERE
+
+### Update patient
+PUT http://127.0.0.1:8000/api/patients/1/
+Content-Type: application/json
+Authorization: Bearer YOUR_ACCESS_TOKEN_HERE
+
+{
+    "mrn": "MRN001234",
+    "first_name": "John",
+    "last_name": "Doe",
+    "date_of_birth": "1965-05-15",
+    "gender": "M",
+    "phone": "555-0199",
+    "email": "john.doe@email.com",
+    "address": "456 Oak Ave, Newtown, ST 12346",
+    "emergency_contact_name": "Jane Doe",
+    "emergency_contact_phone": "555-0200",
+    "primary_diagnosis": "Diabetes Type 2, Hypertension, CHF",
+    "medications": "Metformin 500mg BID, Lisinopril 10mg daily, Furosemide 20mg daily"
+}
+
+### 3. VISIT MANAGEMENT ENDPOINTS
+
+### Create a new visit
+POST http://127.0.0.1:8000/api/visits/
+Content-Type: application/json
+Authorization: Bearer YOUR_ACCESS_TOKEN_HERE
+
+{
+    "patient": 1,
+    "visit_type": "SN",
+    "scheduled_date": "2025-07-11T10:00:00Z",
+    "chief_complaint": "Routine diabetes management and wound care",
+    "vital_signs": {
+        "blood_pressure": "140/90",
+        "heart_rate": 78,
+        "temperature": 98.6,
+        "weight": 180,
+        "oxygen_saturation": 98
+    }
+}
+
+### Get all visits
+GET http://127.0.0.1:8000/api/visits/
+Authorization: Bearer YOUR_ACCESS_TOKEN_HERE
+
+### Get specific visit
+GET http://127.0.0.1:8000/api/visits/1/
+Authorization: Bearer YOUR_ACCESS_TOKEN_HERE
+
+### Start a visit
+POST http://127.0.0.1:8000/api/visits/1/start_visit/
+Authorization: Bearer YOUR_ACCESS_TOKEN_HERE
+
+### Add notes to a visit
+POST http://127.0.0.1:8000/api/visits/1/notes/
+Content-Type: application/json
+Authorization: Bearer YOUR_ACCESS_TOKEN_HERE
+
+{
+    "note_type": "structured",
+    "title": "Assessment and Plan",
+    "content": "Patient reports good adherence to medication regimen. Blood glucose levels have been stable. Wound on left foot showing signs of healing.",
+    "structured_data": {
+        "pain_level": 3,
+        "mobility": "Independent with walker",
+        "wound_status": "Improving",
+        "medication_compliance": "Good"
+    }
+}
+
+### Get all notes for a visit
+GET http://127.0.0.1:8000/api/visits/1/notes_list/
+Authorization: Bearer YOUR_ACCESS_TOKEN_HERE
+
+### Generate AI summary for visit
+POST http://127.0.0.1:8000/api/visits/1/summary/
+Content-Type: application/json
+Authorization: Bearer YOUR_ACCESS_TOKEN_HERE
+
+{
+    "include_notes": true,
+    "include_vitals": true,
+    "summary_type": "physician"
+}
+
+### Get documentation template
+GET http://127.0.0.1:8000/api/visits/1/template/
+Authorization: Bearer YOUR_ACCESS_TOKEN_HERE
+
+### End a visit
+POST http://127.0.0.1:8000/api/visits/1/end_visit/
+Authorization: Bearer YOUR_ACCESS_TOKEN_HERE
+
+### 4. ORIGINAL EMPLOYEE API (Still Available)
+
+### Get all employees
+GET http://127.0.0.1:8000/api/employees/
+
+### Create a new employee
+POST http://127.0.0.1:8000/api/employees/
+Content-Type: application/json
+
+{
+    "name": "Alice Johnson",
+    "job": "Healthcare IT Specialist",
+    "email": "alice@healthcare.com"
+}
